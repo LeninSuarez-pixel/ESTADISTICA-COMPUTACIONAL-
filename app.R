@@ -3,11 +3,10 @@ library(ggplot2)
 library(shinythemes)
 library(dplyr)
 
-# Define UI for application
+
 ui <- fluidPage(
   theme = shinytheme("flatly"),
   
-  # Custom CSS
   tags$head(
     tags$style(HTML("
             .nav-tabs {
@@ -96,7 +95,7 @@ ui <- fluidPage(
         "))
   ),
   
-  # Application title
+  
   titlePanel(
     div(
       style = "background-color: #2c3e50; color: white; padding: 25px; border-radius: 5px;",
@@ -108,12 +107,12 @@ ui <- fluidPage(
   
   br(),
   
-  # Navigation tabs
+ 
   tabsetPanel(
     type = "tabs",
     id = "mainTabs",
     
-    # Introducción tab
+    
     tabPanel(
       "Introducción",
       fluidRow(
@@ -172,7 +171,7 @@ ui <- fluidPage(
       )
     ),
     
-    # Simulación tab
+    
     tabPanel(
       "Simulación Interactiva",
       sidebarLayout(
@@ -197,7 +196,7 @@ ui <- fluidPage(
                       value = 50,
                       step = 1),
           
-          # Conditional panels for different distributions
+          
           conditionalPanel(
             condition = "input.dist_type == 'norm'",
             sliderInput("mean_val", "Media:", -5, 5, 0, 0.1),
@@ -285,7 +284,7 @@ ui <- fluidPage(
       )
     ),
     
-    # Aplicaciones tab
+  
     tabPanel(
       "Aplicaciones",
       fluidRow(
@@ -363,7 +362,7 @@ ui <- fluidPage(
       )
     ),
     
-    # Recursos tab
+    
     tabPanel(
       "Recursos",
       fluidRow(
@@ -444,10 +443,10 @@ if(resultado$p.value > nivel_significancia) {
   )
 )
 
-# Define server logic
+
 server <- function(input, output, session) {
   
-  # Reactive data generation
+  
   sample_data <- eventReactive(input$simulate, {
     req(input$sample_size)
     
@@ -472,7 +471,7 @@ server <- function(input, output, session) {
     return(data)
   })
   
-  # Histogram plot
+  
   output$distPlot <- renderPlot({
     data <- sample_data()
     
@@ -501,7 +500,7 @@ server <- function(input, output, session) {
     }
   })
   
-  # Q-Q plot
+
   output$qqPlot <- renderPlot({
     data <- sample_data()
     
@@ -522,7 +521,7 @@ server <- function(input, output, session) {
     }
   })
   
-  # Shapiro-Wilk test results
+  
   output$testResult <- renderPrint({
     data <- sample_data()
     
@@ -546,7 +545,7 @@ server <- function(input, output, session) {
     }
   })
   
-  # Interpretation
+  
   output$interpretation <- renderUI({
     data <- sample_data()
     
@@ -573,7 +572,7 @@ server <- function(input, output, session) {
     }
   })
   
-  # Descriptive statistics table
+
   output$descriptiveStats <- renderTable({
     data <- sample_data()
     
@@ -594,7 +593,7 @@ server <- function(input, output, session) {
     }
   }, bordered = TRUE, striped = TRUE, align = 'c', width = '100%')
   
-  # Sample information
+  
   output$sampleInfo <- renderUI({
     data <- sample_data()
     
@@ -613,5 +612,6 @@ server <- function(input, output, session) {
   })
 }
 
-# Run the application 
+
 shinyApp(ui = ui, server = server)
+
